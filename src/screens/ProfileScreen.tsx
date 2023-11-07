@@ -1,5 +1,5 @@
-import { Text, Avatar, Slider, Box, Divider } from 'native-base';
-import React, { useContext, useState } from 'react';
+import { Text, Avatar, Slider, Box, Divider, Button } from 'native-base';
+import React, { useContext, useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { UserContext } from '../contexts/UserContext';
 
@@ -8,7 +8,14 @@ interface ProfileScreenProps {
 }
 
 export const ProfileScreen: React.FC<ProfileScreenProps> = () => {
-    const { goal, setGoal, user } = useContext(UserContext);
+    const [local, setLocal] = useState<number>(9999);
+    const { goal, storeData, user, getData } = useContext(UserContext);
+
+    useEffect(() => {
+        getData().then((data) => {
+            setLocal(data);
+        });
+    }, []);
 
     return (
         <>
@@ -24,6 +31,12 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = () => {
                     Jonas B. Franco
                 </Text>
 
+                {/* <Text  fontSize="2xl" textAlign={"center"} mt={4}>
+                    Goal: {local}
+                </Text> */}
+                
+                
+
                 <Divider my={10} />
 
                 <Box mx={20}>
@@ -38,7 +51,7 @@ export const ProfileScreen: React.FC<ProfileScreenProps> = () => {
                         value={goal}
                         minValue={0} 
                         maxValue={4000} 
-                        onChange={(value) => setGoal(value)}
+                        onChange={(value) => storeData(value)}
                         step={100}
                     >
                         <Slider.Track>
