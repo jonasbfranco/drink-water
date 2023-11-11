@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
 import { IUser } from "../types/UserInterface";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { usePersistState } from "../hooks/usePersistState";
 
 interface IUserContext {
     user?: IUser;
@@ -33,7 +34,7 @@ const STORE_KEY = "@goal";
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const [user] = useState<IUser>(USER);
-    const [goal, setGoal] = useState<number>(GOAL);
+    const [goal, setGoal] = usePersistState(GOAL);
 
     useEffect(() => {
       getData().then((data) => setGoal(data));
